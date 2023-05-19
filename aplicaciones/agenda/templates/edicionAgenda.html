@@ -1,0 +1,52 @@
+{% extends "./base.html" %}
+
+{% block title%} Edición de citas {% endblock%}
+{%block body%}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Edicion de Cita #{{agenda.id}}</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/editarCita/" method="POST">{% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="hidden" id="id" name="id" class="form-control-plaintext" value="{{agenda.id}}" placeholder="Código" minlength="6" maxlength="6" required >
+                        
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="nombreCliente" name="nombreCliente"  value="{{agenda.nombreCliente}}" class="form-control" placeholder="Nombre Cliente" minlength="3" maxlength="50" required >
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="nombreAbogado" name="nombreAbogado" value="{{agenda.nombreAbogado}}"class="form-control" placeholder="Nombre Abogado" minlength="3" maxlength="50" required >
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="date" id="date" name="date" class="form-control" value=""  minlength="1" maxlength="9" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-primary text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>        
+    </div>
+</div>
+<script>
+    // Crea una cadena de expresión regular que buscará los valores numéricos en la cadena
+    var regex = /(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})/i;
+
+    // Ejecuta la expresión regular en la cadena para extraer los valores numéricos
+    var match = regex.exec("{{agenda.date}}");
+
+    // Crea una nueva instancia de la clase Date con los valores extraídos
+    var fecha = new Date(match[3], obtenerNumeroMes(match[2]), match[1]);
+
+    // Función auxiliar para obtener el número del mes a partir de una cadena de texto
+    function obtenerNumeroMes(nombreMes) {
+        var meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        return meses.indexOf(nombreMes.substring(0, 3));
+    }
+    console.log(fecha.toISOString().split('T')[0])
+    document.querySelector("#date").value = fecha.toISOString().split('T')[0]
+</script>
+
+{% endblock%}
+    

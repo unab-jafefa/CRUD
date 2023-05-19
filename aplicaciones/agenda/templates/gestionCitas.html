@@ -1,0 +1,65 @@
+{% extends "./base.html" %}
+
+{% block title%} Gestión de Citas {% endblock%}
+{%block body%}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <h2> Gestión de Citas</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/registrarCita/" method="POST">{% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" id="id" name="id" class="form-control" placeholder="Código" minlength="6"
+                            maxlength="6" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="nombreCliente" name="nombreCliente" class="form-control"
+                            placeholder="Nombre Cliente" minlength="3" maxlength="50" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="nombreAbogado" name="nombreAbogado" class="form-control"
+                            placeholder="Nombre Abogado" minlength="3" maxlength="50" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="date" id="date" name="date" class="form-control" placeholder="" minlength="1"
+                            maxlength="9" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-primary text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <div class="table-responsive py-2">
+            <h1>Listado de citas</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>id</th>
+                        <th>Nombre Cliente</th>
+                        <th>Nombre Abogado</th>
+                        <th>fecha</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in agenda%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{c.id}}</td>
+                        <td>{{c.nombreCliente}}</td>
+                        <td>{{c.nombreAbogado}}</td>
+                        <td>{{c.date}}</td>
+                        <td><a href="edicionAgenda/{{c.id}}" class="btn btn-info text-white">Editar</a></td>
+                        <td><a href="eliminacionCitas/{{c.id}}" class="btn btn-danger">Eliminar</a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
